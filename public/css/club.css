@@ -1,0 +1,186 @@
+*{
+	font-family: Raleway;
+}
+.college-logo{
+	width: 170px;
+	height: 170px;
+	margin: 0 auto;
+	margin-top: calc(300px - 85px);
+	display: block;
+	user-drag: none; 
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	margin-left:-webkit-calc(50% - 25px);
+	margin-left:-moz-calc(50% - 25px);
+	margin-left:calc(50% - 25px);
+    /* fill the container, preserving aspect ratio, and cropping to fit */
+    background-size: cover;
+    /* center the image vertically and horizontally */
+    background-position: center;
+    /* round the edges to a circle with border radius 1/2 container size */
+    border-radius: 50%;
+}
+
+p{
+	font-family: Raleway;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 100;
+	font-size: 16px;
+	text-align: center;
+	padding-top: 0px;
+}
+
+h2, h3{
+	font-family: Raleway;
+	font-style: bold;
+	font-variant: normal;
+	font-weight: 600;
+	text-align: center;
+	margin-top: 0;
+}
+h2{
+	margin-left: 120px;
+}
+h3{
+	margin-left: 0;
+}
+.table-header{
+	font-weight: bold;
+	text-align: center;
+}
+.two-buttons{
+	text-align: center;
+	margin-left: 120px;
+}
+.two-buttons button{
+	min-width: 160px;
+	border-radius: 0;
+	margin-left: 0.5%;
+	margin-top: 0.5%;
+	margin-bottom: 0.5%;
+	margin-right: 0.5%;
+}
+.banner-college{
+	background: url('/img/banner.jpg');
+	top:0;
+	margin-left: 100px;
+	position: absolute;
+	height: 300px;
+	width: calc(100% - 100px);
+	z-index: -1;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+
+}.banner-club{
+	background: url('/img/binary.png');
+	top:0;
+	margin-left: 100px;
+	position: absolute;
+	height: 300px;
+	width: calc(100% - 100px);
+	z-index: -1;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+}
+
+.info-columns{
+	margin-top: 2%;
+	margin-left: 120px;
+}
+
+.border-right {
+    border-right: 1px solid #c3c3c3;
+}
+
+.border-left {
+    border-left: 1px solid #c3c3c3;
+}
+
+.event-container{
+	width: 100%;
+	margin-top: 5%;
+}
+
+.btn-xs{
+	min-width: 80px;
+	white-space: normal;
+}
+
+.list-group-item{
+	font-weight: bold;
+	font-size: 16px;
+	line-height: 2;
+}
+
+.list-group-item button{
+	min-width: 100px;
+}
+@media screen and (min-width: 1000px) {
+
+	.info-columns {
+        display:block;
+    }  
+}
+
+@media screen and (max-width: 1000px){
+
+	.list-group-item a{
+    	font-size: 12px;
+    }
+}
+
+.modal-content{
+	margin-top: 25%;
+}
+
+label{
+	padding-bottom: 10px;
+}
+
+.container{
+	width: 100%;
+}
+
+
+.comm-avatar{
+    width: 60px;
+    height: 60px;
+    display:block;
+    background-size: contain;
+    margin-top: 15px;
+    margin-left: calc(60px - 40px);
+    margin-right: 8%;
+    background-position: 50% 50%;
+    border-radius: 50%;
+    user-drag: none; 
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+
+.committee-title{
+	float:left;
+
+}
+
+.committee-name{
+	font-weight: 600;
+		padding-top: 5px;
+}
+
+.club-container{
+	width: 35%;
+	margin-left: 35%;
+}
+
+.clubs-list{
+	margin-top: 0.5%;
+}

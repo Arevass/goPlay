@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html ng-app="goPlay">
+<head>
+
+	<title>DIT | goPlay</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">
+
+	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/jquery-accordion-menu.css" rel="stylesheet">
+	<link href="plugins/font-awesome/css/font-awesome.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/sidebar.css">
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://www.simplify.com/commerce/v1/simplify.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
+
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+	<link href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet prefetch'>
+
+	<script src="js/angular.min.js"></script>
+	<script src="js/ui-bootstrap-tpls.js"></script>
+	<script src="js/payment.js" async></script>
+	<script src="js/app.js"></script>
+
+	<script src="plugins/jquery-1.11.1.min.js" type="text/javascript"></script>
+	<script src="js/jquery-accordion-menu.js" type="text/javascript"></script>
+	<script src="https://use.fontawesome.com/69bab23f44.js"></script>
+
+	<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery("#jquery-accordion-menu").jqueryAccordionMenu();
+			jQuery(".colors a").click(function(){
+				if($(this).attr("class") !="default"){
+					$("#jquery-accordion-menu").removeClass();
+					$("#jquery-accordion-menu").addClass("jquery-accordion-menu")
+					.addClass($(this).attr("class"));
+				}
+				else{
+					$("#jquery-accordion-menu").removeClass();
+					$("#jquery-accordion-menu").addClass("jquery-accordion-menu");
+				}
+
+			});
+		});
+	</script>
+	<style>
+		body{background: #F0F0F0 repeat-y top right;}
+		::-moz-selection {background: #7ACDFF;}
+		::selection {background: #7ACDFF;}
+	</style>
+</head>
+<body ng-controller="ModalCtrl">
+		<div class="sidebar-wrapper">
+			<div class="content">
+				<div class="jquery-accordion-menu green" id="jquery-accordion-menu">
+					<div class="jquery-accordion-menu-header">
+						<div id="avatar"></div>
+					</div>
+					<ul>
+						<li>
+							<a href="/home.html"><i class="fa fa-home"></i>Home</a>
+						</li>
+						<li>
+							<a href="/test.html"><i class="fa fa-map-marker"></i>Find</a>
+						</li>
+						<li>
+							<a href="/club.html"><i class="fa fa-futbol-o"></i>Clubs</a>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-calendar"></i>Events</a>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-cogs"></i>Account</a>
+						</li>
+					</ul>
+					<div class="jquery-accordion-menu-footer">
+						<ul>
+							<li>
+								<a href="#"><i class="fa fa-sign-out"></i>Logout</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	<section>
+		<div class="banner-club"></div>
+		<img class="college-logo" src="img/DIT-background.png"/>
+		<h2>DIT Computer Science Society</h2>
+		<div class="two-buttons">
+			<button type="button" class="btn btn-success" ng-click="open()">JOIN US</button>
+			<button type="reset" class="btn btn-info ">CONTACT US</button>
+		</div>
+	</section>
+	<section>
+		<div class="info-columns">
+			<div class="col-md-4">
+				<h3>Events</h3>
+				<div class="event-container">
+					<div class="list-group">
+						<a href="#" class="list-group-item clearfix">
+							<span class="glyphicon glyphicon-sunglasses"></span>
+							2016 HAWAII THEMED SUMMER BALL
+							<span class="pull-right">
+								<button class="btn btn-xs btn-info">BUY A TICKET</button>
+							</span>
+						</a>
+						<a href="#" class="list-group-item clearfix">
+							<span class="fa fa-beer"></span>
+							"A Night At The Oscars!"
+							<span class="pull-right">
+								<button class="btn btn-xs btn-info">BUY A TICKET</button>
+							</span>
+						</a>
+						<a href="#" class="list-group-item clearfix">
+							<span class="glyphicon glyphicon-pencil"></span>
+							Pride Table Quiz with Pride Soc
+							<span class="pull-right">
+								<button class="btn btn-xs btn-danger disabled">SOLD OUT</button>
+							</span>
+						</a>
+						<a href="#" class="list-group-item clearfix">
+							<span class="fa fa-music"></span>
+							80's Halloween Ball!
+							<span class="pull-right">
+								<button class="btn btn-xs btn-danger disabled">SOLD OUT</button>
+							</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 border-left border-right">
+				<h3>Weekly Schedule</h3>
+				<div class="para-container col-md-4">
+					<h4 class="table-header">DAY</h4>
+				</div>
+				<div class="para-container col-md-4">
+					<h4 class="table-header">EVENT</h4>
+				</div>
+				<div class="para-container col-md-4">
+					<h4 class="table-header">ROOM</h4>
+				</div>
+				<div class="para-container col-md-4">
+					<p>Monday</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>Horror Movie Night!</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>B-008</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>Tuesday</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>Society Tea Day</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>HL-011</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>Wednesday</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>Hackathon</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>HL-007</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>Thursday</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>iOS Development</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>CN-069</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>Friday</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>The History of Memes</p>
+				</div>
+				<div class="para-container col-md-4">
+					<p>DB-420</p>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<h3>Committee</h3>
+				<div class="committee-container">
+					<div class="clearfix content-heading">
+						<img class="comm-avatar pull-left" src="img/cieran.jpeg"/>
+						<h4 class="committee-name">Cieran Neeson</h4>
+						<p class="committee-title">El Presidente</p>
+					</div>
+					<div class="clearfix content-heading">
+						<img class="comm-avatar pull-left" src="img/ron.jpg"/>
+						<h4 class="committee-name">Glenn Derwin</h4>
+						<p class="committee-title">Chairperson</p>
+					</div>
+					<div class="clearfix content-heading">
+						<img class="comm-avatar pull-left" src="img/datboi.jpg"/>
+						<h4 class="committee-name">Dat Boi</h4>
+						<p class="committee-title">Meme Advisor</p>
+					</div>
+				</div>
+			</div>
+		</div>
+</section>
+</body>
+<link rel="stylesheet" type="text/css" href="css/club.css">
+</html>

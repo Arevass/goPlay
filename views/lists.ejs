@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="goPlay">
+<head>
+    <meta charset="UTF-8">
+    <title>DEEZ LISTS</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jquery-accordion-menu.css" rel="stylesheet">
+    <link href="plugins/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/sidebar.css">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.simplify.com/commerce/v1/simplify.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
+    <script src="plugins/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="https://use.fontawesome.com/69bab23f44.js"></script>
+
+    <script src="js/angular.min.js"></script>
+    <script src="js/ui-bootstrap-tpls.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/payment.js" async></script>
+    <script src="js/jquery-accordion-menu.js" type="text/javascript"></script>
+</head>
+<body ng-controller="listCtrl">
+
+    <div ng-show="socsShow">
+        SOCS
+    </div>
+    <div ng-show="clubsShow">
+        CLUBS
+    </div>
+
+    <button type="button" ng-click="clubs()">Show Clubs</button>
+    <button type="button" ng-click="socs()">Show Socs</button>
+
+</body>
+</html>

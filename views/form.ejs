@@ -1,0 +1,143 @@
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />
+    <link href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css' rel='stylesheet prefetch'>
+    <link href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet prefetch'>
+    <link href="css/form.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="logo-container">
+            <img class="simplify-logo" src="img/simplify-background.png"/>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <!-- CREDIT CARD FORM STARTS HERE -->
+            <div class="panel panel-default credit-card-box">
+                <div class="panel-heading display-table">
+                    <div class="row display-tr">
+                        <h3 class="panel-title display-td">Payment Details</h3>
+                        <div class="display-td"><img class="accepted-cards img-responsive pull-right" src="img/accepted-cards.png"></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form action="payment" id="simplify-payment-form"
+                          method="post" name="simplify-payment-form">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label>CARD NUMBER</label>
+                                    <div class="input-group">
+                                        <input autocomplete="off"
+                                               autofocus="" class="form-control"
+                                               id="cc-number" maxlength="16" name=
+                                               "cardNumber" placeholder=
+                                               "Valid Card Number" required=""
+                                               type="tel"> <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-7 col-md-7">
+                                <div class="form-group">
+                                    <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label>
+                                    <select id="cc-exp-month">
+                                    <option value="01">
+                                        Jan
+                                    </option>
+                                    <option value="02">
+                                        Feb
+                                    </option>
+                                    <option value="03">
+                                        Mar
+                                    </option>
+                                    <option value="04">
+                                        Apr
+                                    </option>
+                                    <option value="05">
+                                        May
+                                    </option>
+                                    <option value="06">
+                                        Jun
+                                    </option>
+                                    <option value="07">
+                                        Jul
+                                    </option>
+                                    <option value="08">
+                                        Aug
+                                    </option>
+                                    <option value="09">
+                                        Sep
+                                    </option>
+                                    <option value="10">
+                                        Oct
+                                    </option>
+                                    <option value="11">
+                                        Nov
+                                    </option>
+                                    <option value="12">
+                                        Dec
+                                    </option>
+                                </select> <select id="cc-exp-year">
+                                    <option value="15">
+                                        2015
+                                    </option>
+                                    <option value="16">
+                                        2016
+                                    </option>
+                                    <option value="17">
+                                        2017
+                                    </option>
+                                    <option value="18">
+                                        2018
+                                    </option>
+                                    <option value="19">
+                                        2019
+                                    </option>
+                                    <option value="20">
+                                        2020
+                                    </option>
+                                    <option value="21">
+                                        2021
+                                    </option>
+                                    <option value="22">
+                                        2022
+                                    </option>
+                                    <option value="23">
+                                        2023
+                                    </option>
+                                    <option value="24">
+                                        2024
+                                    </option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-md-5 pull-right">
+                                <div class="form-group">
+                                    <label>CV CODE</label>
+                                    <input autocomplete="off" class= "form-control" id="cc-cvc" maxlength="3" name="cardCVC" placeholder="CVC" required="" type="tel">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <button class=
+                                                "btn btn-warning btn-lg btn-block" id=
+                                                "process-payment-btn" type="submit">Pay €10</button>
+                            </div>
+                        </div>
+                        <div class="row" style="display:none;">
+                            <div class="col-xs-12">
+                                <p class="payment-errors"></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- CREDIT CARD FORM ENDS HERE -->
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/payment.js" async></script>
+

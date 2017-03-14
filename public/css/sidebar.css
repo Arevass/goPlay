@@ -1,0 +1,36 @@
+    *{box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box;}
+    body{background: #454545 repeat-y top right;}
+    .content{width: 100px;height:100%;}
+    .colors{width: 100px; float: left; margin: 20px auto;}
+    .colors a{width: 43.3px; height: 30px; float: left;}
+    .colors .default{background: #414956;}
+    .colors .green{background: #03A678;}
+    body{margin: 0;}
+
+
+::-moz-selection { /* Code for Firefox */
+    background: #39FF14;
+}
+
+::selection {
+    background: #39FF14;
+}
+
+#avatar {
+    /* This image is 687 wide by 1024 tall, similar to your aspect ratio */
+    background-image: url('http://i4.istockimg.com/file_thumbview_approve/65934879/5/stock-photo-65934879-portrait-of-a-young-japanese-man-looking-at-camera.jpg');
+    
+    /* make a square container */
+    width: 80px;
+    height: 80px;
+    display:block;
+    /* fill the container, preserving aspect ratio, and cropping to fit */
+    background-size: cover;
+    margin-top: 15px;
+    margin-left: calc(60px - 40px);
+    /* center the image vertically and horizontally */
+    background-position: center;
+
+    /* round the edges to a circle with border radius 1/2 container size */
+    border-radius: 50%;
+}
