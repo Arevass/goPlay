@@ -1,4 +1,4 @@
-var app = angular.module('goPlay', ['ui.router']);
+var app = angular.module('goPlay', ['ui.router', 'ui.bootstrap']);
 
 app.config([
     '$stateProvider',

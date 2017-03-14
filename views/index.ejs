@@ -4,6 +4,14 @@
 
     <title>Home | goPlay</title>
 
+    <!--#NOTE: Move references to angular.js and ui-bootstrap.js to ones in node_modules-->
+    <!--References must be declared in .ejs as angular references the browser window-->
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>
+    <script src="/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+    <script src="/js/angular.js"></script>
+
     <!--CSS Style-->
     <link href="/css/jquery-accordion-menu.css" rel="stylesheet">
     <!--<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />-->
@@ -22,11 +30,6 @@
     <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>-->
 
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>
-
-    <script src="/js/angular.js"></script>
 
     <style>
         body{background: #F0F0F0 repeat-y top right;}
