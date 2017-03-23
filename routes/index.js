@@ -45,7 +45,7 @@ router.post('/login', function(req, res, next){
         if(err){ return next(err); }
 
         if(user){
-
+            user.countLogins();
             return res.json({token: user.generateJWT()});
         } else {
             return res.status(401).json(info);

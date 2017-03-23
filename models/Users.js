@@ -5,15 +5,13 @@ var uniqueValidator = require('mongoose-unique-validator');
 
 var UserSchema = new mongoose.Schema({
 
-    username: {type: String, lowercase: true, required: [true, "can't be blank"], index: true, match: [/^[a-zA-Z0-9]+$/, 'is invalid']},
+    username: {type: String, lowercase: true, unique: true},
     logins: {type: Number, default: 0},
     hash: String,
     salt: String,
     clubs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Club' }]
 
-}, {timestamps: true});
-
-UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
+});
 
 UserSchema.methods.setPassword = function (password) {
 
@@ -53,9 +51,10 @@ UserSchema.methods.toAuthJSON = function () {
     }
 };
 
-UserSchema.methods.countLogins = function (cb) {
+UserSchema.methods.countLogins = function () {
+    console.log('Logins increased');
     this.logins += 1;
-    this.save(cb);
+    this.save();
 };
 
 mongoose.model('User', UserSchema);

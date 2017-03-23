@@ -71,6 +71,7 @@ app.factory('users', [
             $log.info('Retrieving a user of id:');
             $log.info(id);
             return $http.get('/users/' + id).then(function (res) {
+                $log.info(res.data);
                 return res.data;
             });
         };
@@ -380,8 +381,10 @@ app.controller('UserCtrl', [
         $log.info($scope.user);
 
         $scope.username = $scope.user.username;
+        $scope.logins = $scope.user.logins;
 
         $log.info($scope.username);
+        $log.info($scope.logins);
 
     }
 ]);
