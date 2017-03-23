@@ -54,36 +54,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-var Simplify = require("./node_modules/simplify-commerce/simplify.js"),
-    client = Simplify.getClient({
-      publicKey: 'sbpb_M2EwNmRlNjEtMDZjZC00NzdiLWJjNWMtY2Y0ZmE4ZjMxZjcw',
-      privateKey: 'yK9tO4zFpKqQSmSfEUQgBqGWTalrPDdjWmxBGIxEN/95YFFQL0ODSXAOkNtXTToq'
-});
-
-app.post('/payment', function(req, res) {
-
-  console.log('Amount', req.body.amount);
-  console.log('Token', req.body.token);
-
-  client.payment.create({
-    amount : req.body.amount,
-    token : req.body.token,
-    reference : "7a6ef6be31",
-    description : "Test Payment",
-    currency : "USD"
-  }, function(errData, data){
-
-    if(errData){
-      console.error("Error Message: " + errData.data.error.message);
-      // handle the error
-
-      res.sendStatus(404);
-      return;
-    }
-
-    console.log("Payment Status: " + data.paymentStatus);
-    res.redirect('/success.html');
-  });
-});
-
 module.exports = app;

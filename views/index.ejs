@@ -2,7 +2,7 @@
 <html>
 <head>
 
-    <title>Home | goPlay</title>
+    <title>goPlay</title>
 
     <!--#NOTE: Move references to angular.js and ui-bootstrap.js to ones in node_modules-->
     <!--References must be declared in .ejs as angular references the browser window-->
@@ -14,7 +14,8 @@
 
     <!--CSS Style-->
     <link href="/css/jquery-accordion-menu.css" rel="stylesheet">
-    <!--<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />-->
+    <link href="/css/form.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />
     <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">-->
     <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
     <!--<link rel="stylesheet" href="css/search.css">-->
@@ -25,6 +26,20 @@
     <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>-->
     <!--<script src="js/angular.min.js"></script>-->
     <!--<script src="js/angular.js"></script>-->
+
+    <!-- Payments -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <!--<script type="text/javascript" src="https://www.simplify.com/commerce/v1/simplify.js"></script>-->
+    <script type="text/javascript" src="https://www.simplify.com/commerce/simplify.pay.js"></script>
+    <script src="/js/payment.js" async></script>
+
+    <script>
+        SimplifyCommerce.hostedPayments(
+            function (response) {
+                console.log(response);
+            }
+        ).closeOnCompletion();
+    </script>
 
     <!-- Router -->
     <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>-->
@@ -38,20 +53,25 @@
     </style>
 
 </head>
-<body ng-app="goPlay" ng-controller="MainCtrl">
+<body ng-app="goPlay">
 
     <div class="sidebar-wrapper" ng-controller="NavCtrl">
+        <img src="/img/goplay_white.png" style="width: 150px; height: 100px; margin-left: 3px; margin-bottom: 3px;">
         <div class="content">
             <div class="jquery-accordion-menu green" id="jquery-accordion-menu">
-                <ul>
-                    <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
-                    <li>
-                        <a href="/#/home.html"><i class="fa fa-home"></i>Home</a>
-                    </li>
-                    <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
-                    <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
-                    <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
-                </ul>
+                <div class="jquery-accordion-menu-header">
+                    <ul>
+                        <li ng-show="isLoggedIn()"><a href="#/users/{{ currentUserId }}">{{ currentUser() }}</a></li>
+                        <li><a href="/#/home.html"><i class="fa fa-home"></i>Home</a></li>
+                        <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
+                    </ul>
+                </div>
+                <div class="jquery-accordion-menu-footer">
+                    <ul>
+                        <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
+                        <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -76,7 +96,9 @@
             </span>
         </div>
 
-        <form ng-submit="createClub()">
+        <button type="button" class="btn btn-primary" ng-click="clubModal()">Create</button>
+
+        <!--<form ng-submit="createClub()">
             <h3>Create a club</h3>
 
             <div class="form-group">
@@ -92,10 +114,46 @@
                        ng-model="desc"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
+        </form>-->
+    </script>
+
+    <script type="text/ng-template" id="/clubForm.html">
+        <form ng-submit="createClub()">
+
+            <div class="modal-header">
+                <h3>Create a club</h3>
+            </div>
+
+            <div class="modal-body">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Name"
+                       ng-model="name"></input>
+
+                <textarea type="text"
+                          class="form-control"
+                          rows="3"
+                          placeholder="Description"
+                          ng-model="desc"></textarea>
+
+                <input type="text"
+                       class="form-control"
+                       placeholder="Simplify Public Key"
+                       ng-model="pubKey"></input>
+
+                <input type="text"
+                       class="form-control"
+                       placeholder="Registration Fee Amount"
+                       ng-model="regFee"></input>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
         </form>
     </script>
 
-    <script type="text/ng-template" id="/clubs.html">
+    <script type="text/ng-template" id="/clubs.html" data-jsassets="https://www.simplify.com/commerce/simplify.pay.js">
         <div class="page-header">
             <h3>
                 <h1 ng-show="club.name">
@@ -104,12 +162,30 @@
             </h3>
         </div>
 
-        <span style="font-size:20px; margin-left:10px;">
-                {{club.desc}}
+        <button class="btn btn-primary"
+                data-sc-key="{{club.pubKey}}"
+                data-name="{{club.name}}"
+                data-description="{{club.desc}}"
+                data-reference="99999"
+                data-amount="{{club.regFee}}"
+                data-color="#12B830">
+            Join!
+        </button>
+
+        <span style="margin-right: auto; margin-left: auto">
+            <button type="button" class="btn btn-primary" ng-click="joinModal()">Join Now!</button>
+        </span>
+
+        <span style="margin-right: auto; margin-left: auto">
+            <button type="button" class="btn btn-primary" ng-click="addMember()">Join Free!</button>
         </span>
 
         <span style="font-size:20px; margin-left:10px;">
-                {{club.owner}}
+            {{club.desc}}
+        </span>
+
+        <span style="font-size:20px; margin-left:10px;">
+            {{club.owner}}
         </span>
 
         <div ng-repeat="event in club.events">
@@ -136,6 +212,15 @@
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
         </form>
+
+        <button type="button" class="btn btn-primary" ng-click="deleteClub()">Delete</button>
+
+    </script>
+
+    <script type="text/ng-template" id="/users.html">
+
+        {{ $scope.username }}
+
     </script>
 
     <script type="text/ng-template" id="/login.html">
@@ -194,6 +279,95 @@
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
+    </script>
+
+    <script type="text/ng-template" id="/paymentForm.html">
+        <body>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-7 col-md-7">
+                        <!-- CREDIT CARD FORM STARTS HERE -->
+                        <div class="panel panel-default credit-card-box">
+                            <div class="panel-heading display-table">
+                                <div class="row display-tr">
+                                    <h3 class="panel-title display-td">Payment Details</h3>
+                                    <div class="display-td"><img class="accepted-cards img-responsive pull-right" src="/img/accepted-cards.png"></div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <form ng-submit="makePayment()" id="simplify-payment-form" name="simplify-payment-form">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label>CARD NUMBER</label>
+                                                <div class="input-group">
+                                                    <input autocomplete="off"
+                                                           autofocus="" class="form-control"
+                                                           id="cc-number" maxlength="16" name=
+                                                           "cardNumber" placeholder=
+                                                           "Valid Card Number" required=""
+                                                           type="tel"> <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-7 col-md-7">
+                                            <div class="form-group">
+                                                <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label>
+                                                <select id="cc-exp-month">
+                                                    <option value="01">Jan</option>
+                                                    <option value="02">Feb</option>
+                                                    <option value="03">Mar</option>
+                                                    <option value="04">Apr</option>
+                                                    <option value="05">May</option>
+                                                    <option value="06">Jun</option>
+                                                    <option value="07">Jul</option>
+                                                    <option value="08">Aug</option>
+                                                    <option value="09">Sep</option>
+                                                    <option value="10">Oct</option>
+                                                    <option value="11">Nov</option>
+                                                    <option value="12">Dec</option>
+                                                </select> <select id="cc-exp-year">
+                                                    <option value="15">2015</option>
+                                                    <option value="16">2016</option>
+                                                    <option value="17">2017</option>
+                                                    <option value="18">2018</option>
+                                                    <option value="19">2019</option>
+                                                    <option value="20">2020</option>
+                                                    <option value="21">2021</option>
+                                                    <option value="22">2022</option>
+                                                    <option value="23">2023</option>
+                                                    <option value="24">2024</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-5 col-md-5 pull-right">
+                                            <div class="form-group">
+                                                <label>CV CODE</label>
+                                                <input autocomplete="off" class= "form-control" id="cc-cvc" maxlength="3" name="cardCVC" placeholder="CVC" required="" type="tel">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <button class=
+                                                    "btn btn-warning btn-lg btn-block" id=
+                                                    "process-payment-btn" type="submit">Pay</button>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="display:none;">
+                                        <div class="col-xs-12">
+                                            <p class="payment-errors"></p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div><!-- CREDIT CARD FORM ENDS HERE -->
+                    </div>
+                </div>
+            </div>
+        </body>
     </script>
 
 </body>

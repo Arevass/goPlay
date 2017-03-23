@@ -1,15 +1,19 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
+var uniqueValidator = require('mongoose-unique-validator');
 
 var UserSchema = new mongoose.Schema({
 
-    username: {type: String, lowercase: true, unique:true},
+    username: {type: String, lowercase: true, required: [true, "can't be blank"], index: true, match: [/^[a-zA-Z0-9]+$/, 'is invalid']},
     logins: {type: Number, default: 0},
     hash: String,
-    salt: String
+    salt: String,
+    clubs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Club' }]
 
-});
+}, {timestamps: true});
+
+UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
 
 UserSchema.methods.setPassword = function (password) {
 
@@ -40,6 +44,13 @@ UserSchema.methods.generateJWT = function () {
 
     }, 'SECRET');
 
+};
+
+UserSchema.methods.toAuthJSON = function () {
+    return {
+        username: this.username,
+        token: this.generateJWT()
+    }
 };
 
 UserSchema.methods.countLogins = function (cb) {

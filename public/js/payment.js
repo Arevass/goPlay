@@ -23,7 +23,7 @@ function simplifyResponseHandler(data) {
         var token = data["id"];
         // Insert the token into the form so it gets submitted to the server
         $paymentForm.append("<input type='hidden' name='token' value='" + token + "' />");
-
+        console.log('test');
         $paymentForm.append("<input type='hidden' name='amount' value='1000' />");
         // Submit the form to the server
         $paymentForm.get(0).submit();
@@ -32,11 +32,12 @@ function simplifyResponseHandler(data) {
 
 $(document).ready(function() {
     $("#simplify-payment-form").on("submit", function() {
+        console.log('test');
         // Disable the submit button
         $("#process-payment-btn").attr("disabled", "disabled");
         // Generate a card token & handle the response
         SimplifyCommerce.generateToken({
-            key: "sbpb_M2EwNmRlNjEtMDZjZC00NzdiLWJjNWMtY2Y0ZmE4ZjMxZjcw",
+            key: "sbpb_MzI0ZmI0NWMtZTEwOS00NjBhLWJlMTUtN2JhZjEzNjQ4NThi",
             card: {
                 number: $("#cc-number").val(),
                 cvc: $("#cc-cvc").val(),

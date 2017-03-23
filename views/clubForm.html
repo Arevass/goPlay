@@ -1,0 +1,17 @@
+<form ng-submit="createClub()">
+    <h3>Create a club</h3>
+
+    <div class="form-group">
+        <input type="text"
+               class="form-control"
+               placeholder="Name"
+               ng-model="name"></input>
+
+        <textarea type="text"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Description"
+                  ng-model="desc"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
