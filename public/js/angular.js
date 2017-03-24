@@ -29,7 +29,12 @@ app.config([
             .state('users', {
                 url: '/users/{id}',
                 templateUrl: '/users.html',
-                controller: 'UserCtrl'
+                controller: 'UserCtrl',
+                resolve: {
+                    user: ['$stateParams', 'users', function ($stateParams, users) {
+                        return users.get($stateParams.id)
+                    }]
+                }
             })
             .state('login', {
                 url: '/login',
@@ -67,14 +72,21 @@ app.factory('users', [
             users: []
         };
 
+        o.getAll = function () {
+            return $http.get('/users').success(function (data) {
+                angular.copy(data, o.users);
+            });
+        };
+
         o.get = function (id) {
-            $log.info('Retrieving a user of id:');
-            $log.info(id);
+            $log.info('users.get called');
             return $http.get('/users/' + id).then(function (res) {
-                $log.info(res.data);
                 return res.data;
             });
         };
+
+        return o;
+
     }
 ]);
 
@@ -371,20 +383,35 @@ app.controller('ClubsCtrl', [
 
 app.controller('UserCtrl', [
     '$scope',
+    '$http',
     '$log',
     'clubs',
+    'users',
+    'user',
     'auth',
-    function ($scope, $log, clubs, auth) {
+    function ($scope, $http, $log, clubs, users, user, auth) {
 
-        $scope.user = auth.currentUserObject();
+        //$scope.userAuth = auth.currentUserObject();
 
-        $log.info($scope.user);
+        $log.info(user);
 
-        $scope.username = $scope.user.username;
-        $scope.logins = $scope.user.logins;
+        //$log.info($scope.userAuth._id);
 
-        $log.info($scope.username);
-        $log.info($scope.logins);
+        //var test = '/users/' + $scope.userAuth._id;
+
+        //$log.info(test);
+
+        //$scope.user = users.get($scope.userAuth._id);
+        //$scope.user = $http.get('/users/' + $scope.userAuth._id);
+        //$scope.user = $http.get(test);
+
+        //$log.info($scope.user);
+
+        $scope.username = user.username;
+        $scope.logins = user.logins;
+
+        //$log.info($scope.username);
+        //$log.info($scope.logins);
 
     }
 ]);

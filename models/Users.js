@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
-var uniqueValidator = require('mongoose-unique-validator');
 
 var UserSchema = new mongoose.Schema({
 
     username: {type: String, lowercase: true, unique: true},
+    email: {type: String, default: 'test@email'},
     logins: {type: Number, default: 0},
     hash: String,
     salt: String,

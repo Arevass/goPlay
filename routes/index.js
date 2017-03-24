@@ -176,7 +176,7 @@ router.get('/users/:user/', function (req, res) {
 
     req.user.populate('clubs', function (err, user) {
 
-        if(err) { return next(err); }
+        if (err) { return next(err); }
 
         res.json(user);
 
