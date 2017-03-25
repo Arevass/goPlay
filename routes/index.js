@@ -125,17 +125,12 @@ router.param('club', function (req, res, next, id) {
 
 router.param('event', function (req, res, next, id) {
 
-    var query = Event.findById(id);
+    console.log('Processing :event parameter: ');
+    console.log(id);
 
-    query.exec(function (err, event) {
+    req.event = id;
 
-        if (err) { return next(err); }
-        if (!event) { return next(new Error('Event not found')); }
-
-        req.event = event;
-        return next();
-
-    });
+    return next();
 
 });
 
@@ -184,6 +179,32 @@ router.get('/users/:user/', function (req, res) {
 
 });
 
+router.get('/clubs/:club/events/:event', function (req, res) {
+
+    req.club.populate('events', function (err, club) {
+
+        if (err) { return next(err); }
+
+        console.log('before loop');
+
+        for ( var i = 0; i < club.events.length; i++ ) {
+
+            console.log(req.event);
+            console.log(club.events[i]);
+
+            if (club.events[i]._id == req.event) {
+
+                res.json(club.events[i]);
+
+            } else {
+
+                res.json('not found');
+
+            }
+        }
+    });
+});
+
 router.post('/clubs/:club/events', auth, function (req, res, next) {
 
     var event = new Event(req.body);
@@ -208,34 +229,32 @@ router.post('/clubs/:club/events', auth, function (req, res, next) {
 
 });
 
-router.post('/clubs/:club/members/:user/join', auth, function (req, res, next) {
+router.post('/clubs/:club/members/:user/join', function (req, res, next) {
 
     console.log('entering club join post');
 
     var member = req.user;
 
-    //res.send(member);
-
-    console.log('test');
     console.log(member);
 
     //member.username = req.payload.username;
     //member._id = req.payload._id;
 
-    member.update(function (err, member) {
+    //member.save(function (err, member) {
 
-        if (err) { return next(err); }
+    //    if (err) { return next(err); }
 
-        req.club.members.push(member);
-        req.club.save(function (err, club) {
+    req.club.members.push(member);
+    req.club.save(function (err, club) {
 
-            if(err) { return next(err); }
+        if(err) { return next(err); }
 
-            res.json(member);
-
-        });
+        console.log('Successfully joined club');
+        res.json(member);
 
     });
+
+    //});
 
 });
 

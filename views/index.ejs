@@ -191,7 +191,7 @@
 
         <div ng-repeat="event in club.events">
             {{event.creator}}
-            {{event.name}}
+            <a href="/#/clubs/{{club._id}}/events/{{event._id}}">{{event.name}}</a>
             {{event.desc}}
         </div>
 
@@ -230,6 +230,18 @@
 
         <div>
             You've logged in {{ logins }} times!
+        </div>
+
+    </script>
+
+    <script type="text/ng-template" id="/events.html">
+
+        <div class="page-header">
+            <h3>
+                <h1>
+                    {{ name }}
+                </h1>
+            </h3>
         </div>
 
     </script>

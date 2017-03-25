@@ -36,6 +36,20 @@ app.config([
                     }]
                 }
             })
+            .state('events', {
+                url: '/clubs/{id}/events/{eid}',
+                templateUrl: '/events.html',
+                controller: 'EventCtrl',
+                resolve: {
+                    event: ['$stateParams', 'clubs', function ($stateParams, clubs) {
+                        return clubs.getEvent($stateParams.id, $stateParams.eid);
+                    }],
+                    club: ['$stateParams', 'clubs', function ($stateParams, clubs) {
+                        return clubs.get($stateParams.id);
+                    }]
+                }
+
+            })
             .state('login', {
                 url: '/login',
                 templateUrl: '/login.html',
@@ -111,6 +125,12 @@ app.factory('clubs', [
             return $http.get('/clubs/' + id).then(function (res) {
                 return res.data;
             });
+        };
+
+        o.getEvent = function (id, eid) {
+            return $http.get('/clubs/' + id + '/events/' + eid).then(function (res) {
+                return res.data;
+            })
         };
 
         o.create = function (club) {
@@ -296,9 +316,10 @@ app.controller('ClubsCtrl', [
     '$uibModal',
     '$log',
     'clubs',
+    'users',
     'club',
     'auth',
-    function ($scope, $uibModal, $log, clubs, club, auth) {
+    function ($scope, $uibModal, $log, clubs, users, club, auth) {
 
         var tpl, jsassets, tag, i, l;
 
@@ -345,11 +366,12 @@ app.controller('ClubsCtrl', [
 
             $log.info('addMember called');
 
-            $scope.member = auth.currentUserObject();
+            $scope.member = auth.currentUserId();
 
+            $log.info('currentUserId Return in ClubsCtrl');
             $log.info($scope.member);
 
-            clubs.addMember(club._id, $scope.member._id).success(function (member) {
+            clubs.addMember(club._id, $scope.member).success(function (member) {
 
                 $scope.club.members.push(member);
 
@@ -391,27 +413,27 @@ app.controller('UserCtrl', [
     'auth',
     function ($scope, $http, $log, clubs, users, user, auth) {
 
-        //$scope.userAuth = auth.currentUserObject();
-
         $log.info(user);
-
-        //$log.info($scope.userAuth._id);
-
-        //var test = '/users/' + $scope.userAuth._id;
-
-        //$log.info(test);
-
-        //$scope.user = users.get($scope.userAuth._id);
-        //$scope.user = $http.get('/users/' + $scope.userAuth._id);
-        //$scope.user = $http.get(test);
-
-        //$log.info($scope.user);
 
         $scope.username = user.username;
         $scope.logins = user.logins;
 
-        //$log.info($scope.username);
-        //$log.info($scope.logins);
+    }
+]);
+
+app.controller('EventCtrl', [
+    '$scope',
+    '$log',
+    'event',
+    'club',
+    function ($scope, $log, event, club) {
+
+        $log.info('EventCtrl Initialized');
+
+        $scope.name = event.name;
+
+        $log.info(event);
+        $log.info(club);
 
     }
 ]);
