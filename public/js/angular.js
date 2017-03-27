@@ -291,10 +291,10 @@ app.controller('MainCtrl', [
 
         $scope.createClub = function () {
 
-            if($scope.name === '' ||
-                $scope.desc === '' ||
-                $scope.pubKey === '' ||
-                $scope.regFee === '') { return; }
+            if($scope.name == '' ||
+                $scope.desc == '' ||
+                $scope.pubKey == '' ||
+                $scope.regFee == '') { return; }
 
             clubs.create({
                 name: $scope.name,
@@ -415,8 +415,7 @@ app.controller('UserCtrl', [
 
         $log.info(user);
 
-        $scope.username = user.username;
-        $scope.logins = user.logins;
+        $scope.user = user;
 
     }
 ]);
@@ -429,6 +428,9 @@ app.controller('EventCtrl', [
     function ($scope, $log, event, club) {
 
         $log.info('EventCtrl Initialized');
+
+        $scope.event = event;
+        $scope.club = club;
 
         $scope.name = event.name;
 

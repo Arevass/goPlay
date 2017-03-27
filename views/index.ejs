@@ -17,6 +17,7 @@
     <link href="/css/form.css" rel="stylesheet">
     <link href="/css/sidebar.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />
+    <script src="https://use.fontawesome.com/69bab23f44.js"></script>
     <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">-->
     <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
     <!--<link rel="stylesheet" href="css/search.css">-->
@@ -64,13 +65,13 @@
                     <ul>
                         <li ng-show="isLoggedIn()"><a href="#/users/{{ currentUserId }}">{{ currentUser() }}</a></li>
                         <li><a href="/#/home.html"><i class="fa fa-home"></i>Home</a></li>
-                        <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
+                        <li ng-hide="isLoggedIn()"><a href="/#/register"><i class="fa fa-sign-in"></i>Register</a></li>
                     </ul>
                 </div>
                 <div class="jquery-accordion-menu-footer">
                     <ul>
-                        <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
-                        <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
+                        <li ng-hide="isLoggedIn()"><a href="/#/login"><i class="fa fa-sign-in"></i>Log In</a></li>
+                        <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()"><i class="fa fa-sign-out"></i>Log Out</a></li>
                     </ul>
                 </div>
             </div>
@@ -88,34 +89,21 @@
             <img src="/img/goplay_green.png">
         </div>
 
-        <div ng-repeat="club in clubs">
-            <span style="font-size:20px; margin-left:10px;">
-                {{club.name}}
-            </span>
-            <span>
-                <a href="#/clubs/{{club._id}}">Details</a>
-            </span>
-        </div>
+        <div class="event-container">
+            <div ng-repeat="club in clubs">
+                <ul>
+                    <li>
+                        <h3><a href="#/clubs/{{club._id}}">{{club.name}}</a></h3>
+                        <p>{{ club.desc }}</p>
+                    </li>
+                </ul>
 
-        <button type="button" class="btn btn-primary" ng-click="clubModal()">Create</button>
-
-        <!--<form ng-submit="createClub()">
-            <h3>Create a club</h3>
-
-            <div class="form-group">
-                <input type="text"
-                       class="form-control"
-                       placeholder="Name"
-                       ng-model="name"></input>
-
-                <textarea type="text"
-                       class="form-control"
-                       rows="3"
-                       placeholder="Description"
-                       ng-model="desc"></textarea>
+                <!--<span style="font-size:20px; margin-left:10px;">
+                    <a href="#/clubs/{{club._id}}">{{club.name}}</a>
+                </span>-->
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
-        </form>-->
+        </div>
+        <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="clubModal()">Create</button>
     </script>
 
     <script type="text/ng-template" id="/clubForm.html">
@@ -144,7 +132,7 @@
 
                 <input type="text"
                        class="form-control"
-                       placeholder="Registration Fee Amount"
+                       placeholder="Registration Fee Amount (in cents)"
                        ng-model="regFee"></input>
             </div>
 
@@ -161,6 +149,7 @@
                     {{club.name}}
                 </h1>
             </h3>
+            Created by: {{ club.owner }}
         </div>
 
         <button class="btn btn-primary"
@@ -173,28 +162,27 @@
             Join!
         </button>
 
-        <span style="margin-right: auto; margin-left: auto">
+        <span style="">
             <button type="button" class="btn btn-primary" ng-click="joinModal()">Join Now!</button>
         </span>
 
-        <span style="margin-right: auto; margin-left: auto">
+        <span style="">
             <button type="button" class="btn btn-primary" ng-click="addMember()">Join Free!</button>
         </span>
 
-        <span style="font-size:20px; margin-left:10px;">
+        <span style="font-size:20px;">
             {{club.desc}}
         </span>
 
-        <span style="font-size:20px; margin-left:10px;">
-            {{club.owner}}
-        </span>
-
-        <div ng-repeat="event in club.events">
-            {{event.creator}}
-            <a href="/#/clubs/{{club._id}}/events/{{event._id}}">{{event.name}}</a>
-            {{event.desc}}
-        </div>
-
+        <ul>
+            <div ng-repeat="event in club.events">
+                {{event.creator}}
+                <li>
+                    <h4><a href="/#/clubs/{{club._id}}/events/{{event._id}}">{{event.name}}</a></h4>
+                    <p>{{event.desc}}</p>
+                </li>
+            </div>
+        </ul>
         <form ng-submit="addEvent()"
               style="margin-top:30px;" ng-show="isLoggedIn()">
             <h3>Create an event</h3>
@@ -211,10 +199,10 @@
                           placeholder="Description"
                           ng-model="desc"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button ng-show="isLoggedIn()" type="submit" class="btn btn-primary">Create</button>
         </form>
 
-        <button type="button" class="btn btn-primary" ng-click="deleteClub()">Delete</button>
+        <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="deleteClub()">Delete</button>
 
     </script>
 
@@ -223,13 +211,28 @@
         <div class="page-header">
             <h3>
                 <h1>
-                    {{ username }}
+                    {{ user.username }}
                 </h1>
             </h3>
         </div>
 
         <div>
-            You've logged in {{ logins }} times!
+            You've logged in {{ user.logins }} times!
+        </div>
+
+        <h2>
+            Your clubs:
+        </h2>
+
+        <div ng-repeat="club in user.clubs">
+
+            <h3><a href="#/clubs/{{ club._id }}">{{ club.name }}</a></h3>
+
+            <h4>{{ club.name }}'s Events:</h4>
+            <div ng-repeat="event in club.events">
+                <a href="#/clubs/{{ club._id }}/events/{{ event }}">{{ event }}</a>
+            </div>
+
         </div>
 
     </script>
@@ -239,8 +242,12 @@
         <div class="page-header">
             <h3>
                 <h1>
-                    {{ name }}
+                    {{ club.name }}
                 </h1>
+
+                <h2>{{ event.name }}</h2>
+                Created by: {{ event.creator }}
+
             </h3>
         </div>
 

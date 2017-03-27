@@ -111,10 +111,14 @@ router.param('club', function (req, res, next, id) {
 
     var query = Club.findById(id);
 
+    console.log('Processing club param');
+
     query.exec(function (err, club) {
 
         if (err) { return next(err); }
         if (!club) { return next(new Error('Club not found')); }
+
+        console.log(club);
 
         req.club = club;
         return next();
@@ -136,8 +140,8 @@ router.param('event', function (req, res, next, id) {
 
 router.param('user', function (req, res, next, id) {
 
-    console.log('Processing :user');
-    console.log(id);
+    //console.log('Processing :user');
+    //console.log(id);
 
     var query = User.findById(id);
 
@@ -146,7 +150,7 @@ router.param('user', function (req, res, next, id) {
         if (err) { return next(err); }
         if (!user) { return next(new Error('User not found')); }
 
-        console.log(user);
+        //console.log(user);
 
         req.user = user;
         return next();
@@ -185,8 +189,6 @@ router.get('/clubs/:club/events/:event', function (req, res) {
 
         if (err) { return next(err); }
 
-        console.log('before loop');
-
         for ( var i = 0; i < club.events.length; i++ ) {
 
             console.log(req.event);
@@ -195,10 +197,6 @@ router.get('/clubs/:club/events/:event', function (req, res) {
             if (club.events[i]._id == req.event) {
 
                 res.json(club.events[i]);
-
-            } else {
-
-                res.json('not found');
 
             }
         }
@@ -234,15 +232,19 @@ router.post('/clubs/:club/members/:user/join', function (req, res, next) {
     console.log('entering club join post');
 
     var member = req.user;
+    var clubToJoin = req.club;
 
-    console.log(member);
+    req.club.populate('events', function (err, clubToJoin) {
 
-    //member.username = req.payload.username;
-    //member._id = req.payload._id;
+        if(err) { return next(err); }
 
-    //member.save(function (err, member) {
+        console.log('Next club is important');
+        console.log(clubToJoin);
 
-    //    if (err) { return next(err); }
+        req.user.clubs.push(clubToJoin);
+        req.user.save();
+
+    });
 
     req.club.members.push(member);
     req.club.save(function (err, club) {
@@ -253,8 +255,6 @@ router.post('/clubs/:club/members/:user/join', function (req, res, next) {
         res.json(member);
 
     });
-
-    //});
 
 });
 
