@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="34085b8b-5dfe-4d5b-a182-6519c36fb1ca" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/js/ui-bootstrap-tpls-2.5.0.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/index.ejs" afterPath="$PROJECT_DIR$/views/index.ejs" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -735,7 +735,7 @@
       <workItem from="1489499735529" duration="23550000" />
       <workItem from="1489675086201" duration="4834000" />
       <workItem from="1489769891135" duration="108078000" />
-      <workItem from="1490238585945" duration="69057000" />
+      <workItem from="1490238585945" duration="69442000" />
     </task>
     <task id="LOCAL-00001" summary="UI Bootstrap referencing">
       <created>1489500959780</created>
@@ -772,11 +772,18 @@
       <option name="project" value="LOCAL" />
       <updated>1490600402428</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Mostly done">
+      <created>1490760229557</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1490760229557</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="227416000" />
+    <option name="totallyTimeSpent" value="227801000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="54" y="-8" width="1634" height="1066" extended-state="6" />
