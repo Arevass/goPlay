@@ -152,27 +152,32 @@
             Created by: {{ club.owner }}
         </div>
 
-        <button class="btn btn-primary"
-                data-sc-key="{{club.pubKey}}"
-                data-name="{{club.name}}"
-                data-description="{{club.desc}}"
-                data-reference="99999"
-                data-amount="{{club.regFee}}"
-                data-color="#12B830">
-            Join!
-        </button>
+        <div>
+            <span style="font-size:20px;">
+                {{club.desc}}
+            </span>
+        </div>
 
-        <span style="">
-            <button type="button" class="btn btn-primary" ng-click="joinModal()">Join Now!</button>
-        </span>
 
-        <span style="">
-            <button type="button" class="btn btn-primary" ng-click="addMember()">Join Free!</button>
-        </span>
+        <div>
+            <button class="btn btn-primary"
+                    data-sc-key="{{club.pubKey}}"
+                    data-name="{{club.name}}"
+                    data-description="{{club.desc}}"
+                    data-reference="99999"
+                    data-amount="{{club.regFee}}"
+                    data-color="#12B830">
+                Join!
+            </button>
 
-        <span style="font-size:20px;">
-            {{club.desc}}
-        </span>
+            <span style="">
+                <button type="button" class="btn btn-primary" ng-click="joinModal()">Join Now!</button>
+            </span>
+
+            <span style="">
+                <button type="button" class="btn btn-primary" ng-click="addMember()">Join Free!</button>
+            </span>
+        </div>
 
         <ul>
             <div ng-repeat="event in club.events">
