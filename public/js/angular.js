@@ -104,6 +104,45 @@ app.factory('users', [
     }
 ]);
 
+app.factory('events', [
+    '$state',
+    '$http',
+    '$log',
+    'auth',
+    function ($state, $http, $log, auth) {
+
+        var o = {
+            events: []
+        };
+
+        o.getAll = function () {
+            return $http.get('/events').success(function (data) {
+                angular.copy(data, o.events);
+            });
+        };
+
+        o.get = function (id) {
+            $log.info('events.get called');
+            return $http.get('/events/' + id).then(function (res) {
+                //$log.info(JSON.stringify(res.data));
+                return res.data;
+            });
+        };
+
+        o.delete = function (id) {
+            return $http.delete('/events/' + id, {
+                headers: { Authorization: 'Bearer ' + auth.getToken()}
+            }).success(function (data) {
+                $log.info(data);
+                $state.go('home');
+            })
+        };
+
+        return o;
+
+    }
+]);
+
 app.factory('clubs', [
     '$state',
     '$http',
@@ -387,6 +426,12 @@ app.controller('ClubsCtrl', [
 
         };
 
+        $scope.showToOwner = function () {
+
+            return club.owner == auth.currentUser();
+
+        };
+
         $scope.joinModal = function (size) {
 
             var modalInstance = $uibModal.open({
@@ -409,13 +454,39 @@ app.controller('UserCtrl', [
     '$log',
     'clubs',
     'users',
+    'events',
     'user',
     'auth',
-    function ($scope, $http, $log, clubs, users, user, auth) {
+    function ($scope, $http, $log, clubs, users, events, user, auth) {
 
-        $log.info(user);
+        //$log.info(user);
 
         $scope.user = user;
+
+        // Loop through a user's clubs
+        for (var i = 0; i < user.clubs.length; i++) {
+
+            // For each club, loop through that club's events
+            for (var j = 0; j < user.clubs[i].events.length; j++) {
+
+                // JavaScript dude, god DAMN
+                (function (i, j) {
+
+                    events.get(user.clubs[i].events[j]).then(function (user) {
+
+                        //Replace the event id in the array with the event object itself
+                        $scope.user.clubs[i].events.splice(j, 1, user);
+
+                    });
+
+                })(i, j);
+
+            }
+
+        }
+
+        $log.info('Post Splice: ');
+        $log.info(user);
 
     }
 ]);
@@ -423,19 +494,33 @@ app.controller('UserCtrl', [
 app.controller('EventCtrl', [
     '$scope',
     '$log',
+    'events',
     'event',
     'club',
-    function ($scope, $log, event, club) {
+    'auth',
+    function ($scope, $log, events, event, club, auth) {
 
         $log.info('EventCtrl Initialized');
 
         $scope.event = event;
         $scope.club = club;
+        $scope.isLoggedIn = auth.isLoggedIn;
 
         $scope.name = event.name;
 
-        $log.info(event);
-        $log.info(club);
+        $scope.showToOwner = function () {
+
+            return event.creator == auth.currentUser();
+
+        };
+
+        $scope.deleteEvent = function () {
+
+            $log.info('deleteEvent called');
+            $log.info(event._id);
+            events.delete(event._id);
+
+        };
 
     }
 ]);

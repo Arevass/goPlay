@@ -17,6 +17,7 @@
     <link href="/css/form.css" rel="stylesheet">
     <link href="/css/sidebar.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://use.fontawesome.com/69bab23f44.js"></script>
     <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">-->
     <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
@@ -25,9 +26,6 @@
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="/js/jquery-accordion-menu.js" type="text/javascript"></script>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>-->
-    <!--<script src="js/angular.min.js"></script>-->
-    <!--<script src="js/angular.js"></script>-->
 
     <!-- Payments -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -45,8 +43,6 @@
 
     <!-- Router -->
     <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>-->
-
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         body{background: #F0F0F0 repeat-y top right;}
@@ -188,27 +184,29 @@
                 </li>
             </div>
         </ul>
-        <form ng-submit="addEvent()"
-              style="margin-top:30px;" ng-show="isLoggedIn()">
-            <h3>Create an event</h3>
 
-            <div class="form-group">
-                <input type="text"
-                       class="form-control"
-                       placeholder="Name"
-                       ng-model="name"></input>
+        <div ng-show="showToOwner()">
+            <form ng-submit="addEvent()"
+                  style="margin-top:30px;" ng-show="isLoggedIn()">
+                <h3>Create an event</h3>
 
-                <textarea type="text"
-                          class="form-control"
-                          rows="3"
-                          placeholder="Description"
-                          ng-model="desc"></textarea>
-            </div>
-            <button ng-show="isLoggedIn()" type="submit" class="btn btn-primary">Create</button>
-        </form>
+                <div class="form-group">
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Name"
+                           ng-model="name"></input>
 
-        <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="deleteClub()">Delete</button>
+                    <textarea type="text"
+                              class="form-control"
+                              rows="3"
+                              placeholder="Description"
+                              ng-model="desc"></textarea>
+                </div>
+                <button ng-show="isLoggedIn()" type="submit" class="btn btn-primary">Create</button>
+            </form>
 
+            <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="deleteClub()">Delete</button>
+        </div>
     </script>
 
     <script type="text/ng-template" id="/users.html">
@@ -235,7 +233,7 @@
 
             <h4>{{ club.name }}'s Events:</h4>
             <div ng-repeat="event in club.events">
-                <a href="#/clubs/{{ club._id }}/events/{{ event }}">{{ event }}</a>
+                <a href="#/clubs/{{ club._id }}/events/{{ event._id }}">{{ event.name }}</a>
             </div>
 
         </div>
@@ -247,13 +245,17 @@
         <div class="page-header">
             <h3>
                 <h1>
-                    {{ club.name }}
+                    <a href="#/clubs/{{ club._id }}">{{ club.name }}</a>
                 </h1>
 
                 <h2>{{ event.name }}</h2>
                 Created by: {{ event.creator }}
 
             </h3>
+        </div>
+
+        <div ng-show="showToOwner()">
+            <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="deleteEvent()">Delete</button>
         </div>
 
     </script>

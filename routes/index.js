@@ -77,6 +77,18 @@ router.get('/users', function (req, res, next) {
 
 });
 
+router.get('/events', function (req, res, next) {
+
+    Event.find(function (err, events) {
+
+        if (err) { next(err); }
+
+        res.json(events);
+
+    })
+
+});
+
 router.post('/clubs', auth, function (req, res, next) {
 
     var club = new Club(req.body);
@@ -107,18 +119,32 @@ router.delete('/clubs/:club', auth, function (req, res, next) {
 
 });
 
+router.delete('/events/:event', auth, function (req, res, next) {
+
+    var event = req.event;
+
+    event.remove(function (err, event) {
+
+        if (err) { return next(err); }
+
+        res.json(event);
+
+    });
+
+});
+
 router.param('club', function (req, res, next, id) {
 
     var query = Club.findById(id);
 
-    console.log('Processing club param');
+    //console.log('Processing club param');
 
     query.exec(function (err, club) {
 
         if (err) { return next(err); }
         if (!club) { return next(new Error('Club not found')); }
 
-        console.log(club);
+        //console.log(club);
 
         req.club = club;
         return next();
@@ -132,9 +158,23 @@ router.param('event', function (req, res, next, id) {
     console.log('Processing :event parameter: ');
     console.log(id);
 
-    req.event = id;
+    var query = Event.findById(id);
 
-    return next();
+    query.exec(function (err, event) {
+
+        if (err) { return next(err); }
+        if (!event) { return next(new Error('Event not found')); }
+
+        console.log(event)
+
+        req.event = event;
+        return next();
+
+    });
+
+    //req.event = id;
+
+    //return next();
 
 });
 
@@ -177,15 +217,22 @@ router.get('/users/:user/', function (req, res) {
 
         if (err) { return next(err); }
 
+        console.log(user);
         res.json(user);
 
     })
 
 });
 
+router.get('/events/:event/', function (req, res) {
+
+    res.json(req.event);
+
+});
+
 router.get('/clubs/:club/events/:event', function (req, res) {
 
-    req.club.populate('events', function (err, club) {
+    /*req.club.populate('events', function (err, club) {
 
         if (err) { return next(err); }
 
@@ -194,13 +241,16 @@ router.get('/clubs/:club/events/:event', function (req, res) {
             console.log(req.event);
             console.log(club.events[i]);
 
-            if (club.events[i]._id == req.event) {
+            if (club.events[i]._id == req.event._id) {
 
                 res.json(club.events[i]);
 
             }
         }
-    });
+    });*/
+
+    res.json(req.event);
+
 });
 
 router.post('/clubs/:club/events', auth, function (req, res, next) {
