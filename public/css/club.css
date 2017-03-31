@@ -34,7 +34,7 @@ p{
 	padding-top: 0px;
 }
 
-h2, h3{
+h1, h2, h3, h4, h5{
 	font-family: Raleway;
 	font-variant: normal;
 	font-weight: 600;
@@ -62,10 +62,7 @@ h3{
 .one-button button{
 	min-width: 160px;
 	border-radius: 0;
-	margin-left: 0.5%;
-	margin-top: 0.5%;
-	margin-bottom: 0.5%;
-	margin-right: 0.5%;
+	margin: 0.5%;
 }
 .two-buttons{
 	text-align: center;
@@ -74,10 +71,12 @@ h3{
 .two-buttons button{
 	min-width: 160px;
 	border-radius: 0;
-	margin-left: 0.5%;
-	margin-top: 0.5%;
-	margin-bottom: 0.5%;
-	margin-right: 0.5%;
+	margin: 0.5%;
+}
+.event-content{
+	margin-left: 120px;
+	margin-bottom: 30px;
+	text-align: center;
 }
 .banner-college{
 	top:0;
