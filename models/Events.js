@@ -5,7 +5,9 @@ var EventSchema = new mongoose.Schema({
     name: String,
     desc: String,
     creator: String,
-    club: { type: mongoose.Schema.Types.ObjectId, ref: 'Club' }
+    price: String,
+    club: { type: mongoose.Schema.Types.ObjectId, ref: 'Club' },
+    tickets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 
 });
 

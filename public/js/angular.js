@@ -138,6 +138,12 @@ app.factory('events', [
             })
         };
 
+        o.buyTicket = function (id, user) {
+            return $http.post('/events/' + id + '/tickets/' + user + '/join', {
+                headers: { Authorization: 'Bearer ' + auth.getToken()}
+            });
+        };
+
         return o;
 
     }
@@ -388,6 +394,7 @@ app.controller('ClubsCtrl', [
 
                 name: $scope.name,
                 desc: $scope.desc,
+                price: $scope.ticPrice,
                 creator: 'user'
 
             }).success(function(event) {
@@ -398,6 +405,7 @@ app.controller('ClubsCtrl', [
 
             $scope.name = '';
             $scope.desc = '';
+            $scope.ticPrice = '';
 
         };
 
@@ -432,19 +440,24 @@ app.controller('ClubsCtrl', [
 
         };
 
-        $scope.joinModal = function (size) {
+        $scope.eventModal = function (size) {
 
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
-                templateUrl: '/paymentForm.html',
-                controller: 'PaymentCtrl',
+                templateUrl: '/eventForm.html',
+                controller: 'ClubsCtrl',
+                resolve: {
+                    club: ['$stateParams', 'clubs', function ($stateParams, clubs) {
+                        return clubs.get($stateParams.id);
+                    }]
+                },
                 size: size
             });
 
             modalInstance.result.then(function () {
                 $log.info('Modal dismissed at: ' + new Date());
             });
-        }
+        };
     }
 ]);
 
@@ -502,6 +515,21 @@ app.controller('EventCtrl', [
 
         $log.info('EventCtrl Initialized');
 
+        var tpl, jsassets, tag, i, l;
+
+        tpl = document.getElementById('/clubs.html');
+
+        jsassets = (tpl.getAttribute('data-jsassets') || '').split(',');
+
+        //Retrieve list of javascript assets and inject them into the page
+
+        for( i = 0, l = jsassets.length; i < l; i++) {
+            tag = document.createElement('script');
+            tag.type = "text/javascript";
+            tag.src = jsassets[i];
+            document.head.appendChild(tag);
+        }
+
         $scope.event = event;
         $scope.club = club;
         $scope.isLoggedIn = auth.isLoggedIn;
@@ -514,6 +542,19 @@ app.controller('EventCtrl', [
 
         };
 
+        $scope.buyTicket = function () {
+
+            $scope.user = auth.currentUserId();
+
+            events.buyTicket(event._id, $scope.user).success(function (user) {
+
+                $log.info('User bought ticket');
+                $scope.event.tickets.push(user);
+
+            })
+
+        };
+
         $scope.deleteEvent = function () {
 
             $log.info('deleteEvent called');
@@ -521,7 +562,6 @@ app.controller('EventCtrl', [
             events.delete(event._id);
 
         };
-
     }
 ]);
 

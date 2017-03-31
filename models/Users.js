@@ -6,10 +6,11 @@ var UserSchema = new mongoose.Schema({
 
     username: {type: String, lowercase: true, unique: true},
     email: {type: String, default: 'test@email'},
-    logins: {type: Number, default: 0},
+    logins: {type: Number, default: 1},
     hash: String,
     salt: String,
-    clubs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Club' }]
+    clubs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Club' }],
+    events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event'}]
 
 });
 

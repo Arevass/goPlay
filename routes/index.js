@@ -5,6 +5,8 @@ var passport = require('passport');
 var jwt = require('express-jwt');
 var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
+var nodemailer = require('nodemailer');
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
@@ -277,6 +279,27 @@ router.post('/clubs/:club/events', auth, function (req, res, next) {
 
 });
 
+router.post('/events/:event/tickets/:user/join', function (req, res, next) {
+
+    console.log('Entering event join post');
+
+    var user = req.user;
+    var event = req.event;
+
+    req.user.events.push(event);
+    req.user.save();
+
+    req.event.tickets.push(user);
+    req.event.save(function (err, event) {
+
+        if(err) { return next(err); }
+
+        res.json(user);
+
+    });
+
+});
+
 router.post('/clubs/:club/members/:user/join', function (req, res, next) {
 
     console.log('entering club join post');
@@ -305,6 +328,50 @@ router.post('/clubs/:club/members/:user/join', function (req, res, next) {
         res.json(member);
 
     });
+
+});
+
+router.post('/email', function (req, res) {
+
+    console.log('Sending email');
+
+    var transporter = nodemailer.createTransport({
+        service: 'SendPulse',
+        auth: {
+            user: 'glenn278@hotmail.com',
+            password: '3MXs9Qqmm8NLjsp'
+        }
+    });
+
+    transporter.verify(function (err, success) {
+
+        if(err) { console.log(err); } else {
+
+            console.log('Server is ready to send');
+
+        }
+
+    });
+
+    var mailOptions = {
+
+        from: '"goPlay Notifications" <notifications@goPlay.com>',
+        to: 'glennderwin@gmail.com',
+        subject: 'Hello',
+        text: 'Hello World',
+        html: '<b>Hello world</b>'
+
+    };
+
+    transporter.sendMail(mailOptions, function (err, info) {
+
+        if (err) { console.log(err); }
+
+        //console.log('Message %s sent: %s', info.messageId, info.response);
+
+    });
+
+    res.send('Email sent');
 
 });
 

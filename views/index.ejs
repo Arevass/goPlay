@@ -82,24 +82,49 @@
 
     <script type="text/ng-template" id="/home.html">
         <div class="page-header">
-            <img src="/img/goplay_green.png">
+            <div class="logo">
+                <img src="/img/goplay_green.png">
+            </div>
         </div>
 
         <div class="event-container">
-            <div ng-repeat="club in clubs">
+            <!--<div ng-repeat="club in clubs">
                 <ul>
                     <li>
                         <h3><a href="#/clubs/{{club._id}}">{{club.name}}</a></h3>
                         <p>{{ club.desc }}</p>
                     </li>
                 </ul>
+            </div>-->
 
-                <!--<span style="font-size:20px; margin-left:10px;">
-                    <a href="#/clubs/{{club._id}}">{{club.name}}</a>
-                </span>-->
-            </div>
+            <section>
+                <!--<div class="info-columns">-->
+                    <div class="col-md-12">
+                        <h3>Clubs</h3>
+                        <div class="event-container">
+                            <div class="list-group">
+                                <div ng-repeat="club in clubs">
+                                    <a href="#/clubs/{{club._id}}" class="list-group-item clearfix">
+                                        {{club.name}}
+
+                                        <span class="pull-right">
+                                            <button class="btn btn-xs btn-info">View Club</button>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!--</div>-->
+            </section>
+
         </div>
-        <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="clubModal()">Create</button>
+        <div class="one-button">
+            <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="clubModal()">Create</button>
+        </div>
+
+        <link rel="stylesheet" type="text/css" href="css/club.css">
+
     </script>
 
     <script type="text/ng-template" id="/clubForm.html">
@@ -138,24 +163,56 @@
         </form>
     </script>
 
+    <script type="text/ng-template" id="/eventForm.html">
+        <form ng-submit="addEvent()">
+
+            <div class="modal-header">
+                <h3>Create an event</h3>
+            </div>
+
+            <div class="form-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Name"
+                       ng-model="name"></input>
+
+                <textarea type="text"
+                          class="form-control"
+                          rows="3"
+                          placeholder="Description"
+                          ng-model="desc"></textarea>
+            </div>
+
+                <input type="text"
+                       class="form-control"
+                       placeholder="Registration Fee Amount (in cents)"
+                       ng-model="ticPrice"></input>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </script>
+
     <script type="text/ng-template" id="/clubs.html" data-jsassets="https://www.simplify.com/commerce/simplify.pay.js">
-        <div class="page-header">
+        <!--<div class="page-header">
             <h3>
                 <h1 ng-show="club.name">
                     {{club.name}}
                 </h1>
             </h3>
             Created by: {{ club.owner }}
-        </div>
+        </div>-->
 
-        <div>
+        <!--<div>
             <span style="font-size:20px;">
                 {{club.desc}}
             </span>
-        </div>
+        </div>-->
 
 
-        <div>
+        <!--<div>
             <button class="btn btn-primary"
                     data-sc-key="{{club.pubKey}}"
                     data-name="{{club.name}}"
@@ -173,9 +230,9 @@
             <span style="">
                 <button type="button" class="btn btn-primary" ng-click="addMember()">Join Free!</button>
             </span>
-        </div>
+        </div>-->
 
-        <ul>
+        <!--<ul>
             <div ng-repeat="event in club.events">
                 {{event.creator}}
                 <li>
@@ -183,47 +240,107 @@
                     <p>{{event.desc}}</p>
                 </li>
             </div>
-        </ul>
+        </ul>-->
 
-        <div ng-show="showToOwner()">
-            <form ng-submit="addEvent()"
-                  style="margin-top:30px;" ng-show="isLoggedIn()">
-                <h3>Create an event</h3>
+        <section>
+            <h2>{{club.name}}</h2>
+            <div class="two-buttons">
 
-                <div class="form-group">
-                    <input type="text"
-                           class="form-control"
-                           placeholder="Name"
-                           ng-model="name"></input>
+                <button class="btn btn-primary"
+                        data-sc-key="{{club.pubKey}}"
+                        data-name="{{club.name}}"
+                        data-description="{{club.desc}}"
+                        data-reference="99999"
+                        data-amount="{{club.regFee}}"
+                        data-color="#03a678">
+                    Join!
+                </button>
 
-                    <textarea type="text"
-                              class="form-control"
-                              rows="3"
-                              placeholder="Description"
-                              ng-model="desc"></textarea>
+                <button type="button" class="btn btn-primary" ng-click="addMember()">Join Free!</button>
+            </div>
+        </section>
+
+        <section>
+            <div class="info-columns">
+                <div class="col-md-12">
+                    <h3>Events</h3>
+                    <div class="event-container">
+                        <div class="list-group">
+                            <div ng-repeat="event in club.events">
+                                <a href="/#/clubs/{{club._id}}/events/{{event._id}}" class="list-group-item clearfix">
+                                    {{event.name}}
+
+                                    <span class="pull-right">
+                                        <button class="btn btn-xs btn-info"
+                                                data-sc-key="{{club.pubKey}}"
+                                                data-name="{{event.name}}"
+                                                data-description="{{event.desc}}"
+                                                data-reference="99999"
+                                                data-amount="{{event.price}}"
+                                                data-color="#03a678">
+                                            BUY A TICKET</button>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button ng-show="isLoggedIn()" type="submit" class="btn btn-primary">Create</button>
-            </form>
+            </div>
+        </section>
 
-            <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="deleteClub()">Delete</button>
-        </div>
+        <section>
+            <div ng-show="showToOwner()">
+                <!-- This form is in the modal -->
+                <!--<form ng-submit="addEvent()"
+                      style="margin-top:30px;" ng-show="isLoggedIn()">
+                    <h3>Create an event</h3>
+
+                    <div class="form-group">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Name"
+                               ng-model="name"></input>
+
+                        <textarea type="text"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Description"
+                                  ng-model="desc"></textarea>
+                    </div>
+
+                    <div class="two-buttons">
+                        <button ng-show="isLoggedIn()" type="submit" class="btn btn-primary">Create</button>
+                        <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="deleteClub()">Delete</button>
+                    </div>
+                </form>-->
+
+                <div class="two-buttons">
+                    <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="eventModal()">Create</button>
+                    <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="deleteClub()">Delete</button>
+                </div>
+
+            </div>
+        </section>
+
+        <link rel="stylesheet" type="text/css" href="/css/club.css">
+
     </script>
 
     <script type="text/ng-template" id="/users.html">
 
-        <div class="page-header">
-            <h3>
-                <h1>
+        <section>
+            <div class="page-header">
+                <h3>
                     {{ user.username }}
-                </h1>
-            </h3>
-        </div>
+                </h3>
 
-        <div>
-            You've logged in {{ user.logins }} times!
-        </div>
+                You've logged in {{ user.logins }} times!
 
-        <h2>
+            </div>
+        </section>
+
+
+        <!--<h2>
             Your clubs:
         </h2>
 
@@ -236,11 +353,41 @@
                 <a href="#/clubs/{{ club._id }}/events/{{ event._id }}">{{ event.name }}</a>
             </div>
 
-        </div>
+        </div>-->
+
+        <section>
+            <!--<div class="info-columns">-->
+            <div class="col-md-12">
+                <h3>Your clubs:</h3>
+                <div class="event-container">
+                    <div ng-repeat="club in user.clubs">
+
+                        <h3><a href="#/clubs/{{ club._id }}">{{ club.name }}</a></h3>
+
+                        <h4>{{ club.name }}'s Events:</h4>
+                        <div class="list-group">
+                            <div ng-repeat="event in club.events">
+                                <a href="#/clubs/{{ club._id }}/events/{{ event._id }}" class="list-group-item clearfix">
+                                    {{event.name}}
+
+                                    <span class="pull-right">
+                                        <button class="btn btn-xs btn-info">View Event</button>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--</div>-->
+        </section>
+
+        <link rel="stylesheet" type="text/css" href="css/club.css">
 
     </script>
 
-    <script type="text/ng-template" id="/events.html">
+    <script type="text/ng-template" id="/events.html" data-jsassets="https://www.simplify.com/commerce/simplify.pay.js">
 
         <div class="page-header">
             <h3>
@@ -253,6 +400,22 @@
 
             </h3>
         </div>
+
+        <div>
+            <button class="btn btn-primary"
+                    data-sc-key="{{club.pubKey}}"
+                    data-name="{{event.name}}"
+                    data-description="{{event.desc}}"
+                    data-reference="99999"
+                    data-amount="1500"
+                    data-color="#12B830">
+                Join!
+            </button>
+        </div>
+
+        <span style="">
+                <button type="button" class="btn btn-primary" ng-click="buyTicket()">Join Free!</button>
+        </span>
 
         <div ng-show="showToOwner()">
             <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="deleteEvent()">Delete</button>
