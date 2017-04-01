@@ -47,6 +47,9 @@ h2{
 h3{
 	margin-left: 0;
 }
+.clubs h5{
+	margin-left: 120px;
+}
 .logo{
 	display: block;
 	margin: auto;

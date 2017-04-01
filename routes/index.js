@@ -25,6 +25,7 @@ router.post('/register', function(req, res, next){
     var user = new User();
 
     user.username = req.body.username;
+    user.email = req.body.email;
 
     user.setPassword(req.body.password);
 
@@ -228,7 +229,13 @@ router.get('/users/:user/', function (req, res) {
 
 router.get('/events/:event/', function (req, res) {
 
-    res.json(req.event);
+    req.event.populate('tickets', function (err, event) {
+
+        if (err) { return next(err); }
+
+        res.json(event);
+
+    })
 
 });
 

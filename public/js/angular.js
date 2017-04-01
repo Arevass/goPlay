@@ -366,6 +366,8 @@ app.controller('ClubsCtrl', [
     'auth',
     function ($scope, $uibModal, $log, clubs, users, club, auth) {
 
+        $log.info(club);
+
         var tpl, jsassets, tag, i, l;
 
         tpl = document.getElementById('/clubs.html');
@@ -498,8 +500,20 @@ app.controller('UserCtrl', [
 
         }
 
-        $log.info('Post Splice: ');
-        $log.info(user);
+        // Do the same to retrieve and replace user's events
+        for (var e = 0; e < user.events.length; e++) {
+
+            (function (e) {
+
+                events.get(user.events[e]).then(function (user) {
+
+                    $scope.user.events.splice(e, 1, user);
+
+                })
+
+            })(e);
+
+        }
 
     }
 ]);

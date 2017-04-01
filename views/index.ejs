@@ -245,7 +245,8 @@
 
         <div class="page-header">
             <section>
-                <h2>{{club.name}}</h2>
+                <h2>{{ club.name }}</h2>
+                <div class="clubs"><h5>Created by: {{ club.owner }}</h5></div>
                 <div class="two-buttons">
 
                     <button class="btn btn-primary"
@@ -293,35 +294,31 @@
 
         <section>
             <div ng-show="showToOwner()">
-                <!-- This form is in the modal -->
-                <!--<form ng-submit="addEvent()"
-                      style="margin-top:30px;" ng-show="isLoggedIn()">
-                    <h3>Create an event</h3>
-
-                    <div class="form-group">
-                        <input type="text"
-                               class="form-control"
-                               placeholder="Name"
-                               ng-model="name"></input>
-
-                        <textarea type="text"
-                                  class="form-control"
-                                  rows="3"
-                                  placeholder="Description"
-                                  ng-model="desc"></textarea>
-                    </div>
-
-                    <div class="two-buttons">
-                        <button ng-show="isLoggedIn()" type="submit" class="btn btn-primary">Create</button>
-                        <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="deleteClub()">Delete</button>
-                    </div>
-                </form>-->
 
                 <div class="two-buttons">
                     <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="eventModal()">Create</button>
                     <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="deleteClub()">Delete</button>
                 </div>
 
+            </div>
+        </section>
+
+        <section>
+            <div ng-show="showToOwner()">
+                <div class="info-columns">
+                    <div class="col-md-12">
+                        <h3>Members: </h3>
+                        <div class="event-container">
+                            <div class="list-group">
+                                <div ng-repeat="member in club.members">
+                                    <a href="/#/users/{{member}}" class="list-group-item clearfix">
+                                        {{member}}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -361,7 +358,6 @@
         </div>-->
 
         <section>
-            <!--<div class="info-columns">-->
             <div class="col-md-12">
                 <h3>Your clubs:</h3>
                 <div class="event-container">
@@ -385,7 +381,27 @@
                     </div>
                 </div>
             </div>
-            <!--</div>-->
+        </section>
+
+        <section>
+            <div class="col-md-12">
+                <h3>Your tickets:</h3>
+                <div class="event-container">
+                    <div class="list-group">
+                        <div ng-repeat="event in user.events">
+
+                                <a href="#/clubs/{{ event.club }}/events/{{ event._id }}" class="list-group-item clearfix">
+                                    {{ event.name }}
+
+                                    <span class="pull-right">
+                                        <button class="btn btn-xs btn-info">View Event</button>
+                                    </span>
+
+                                </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <link rel="stylesheet" type="text/css" href="css/club.css">
@@ -432,6 +448,25 @@
         <div ng-show="showToOwner()" class="two-buttons">
             <button ng-show="isLoggedIn()" type="button" class="btn btn-primary" ng-click="deleteEvent()">Delete</button>
         </div>
+
+        <section>
+            <div ng-show="showToOwner()">
+                <div class="info-columns">
+                    <div class="col-md-12">
+                        <h3>Ticket Holders: </h3>
+                        <div class="event-container">
+                            <div class="list-group">
+                                <div ng-repeat="ticket in event.tickets">
+                                    <a href="/#/users/{{ticket}}" class="list-group-item clearfix">
+                                        {{ticket}}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <link rel="stylesheet" type="text/css" href="/css/club.css">
 
@@ -484,6 +519,12 @@
                        class="form-control"
                        placeholder="Username"
                        ng-model="user.username"></input>
+            </div>
+            <div class="form-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Email"
+                       ng-model="user.email"></input>
             </div>
             <div class="form-group">
                 <input type="password"
