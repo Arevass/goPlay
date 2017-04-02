@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 
-mongoose.connect('mongodb://localhost/goplay');
+mongoose.connect('mongodb://glenn:06061994@ds149030.mlab.com:49030/heroku_rw86nj98');
 
 require('./models/Clubs');
 require('./models/Events');
