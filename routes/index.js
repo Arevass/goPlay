@@ -140,14 +140,10 @@ router.param('club', function (req, res, next, id) {
 
     var query = Club.findById(id);
 
-    //console.log('Processing club param');
-
     query.exec(function (err, club) {
 
         if (err) { return next(err); }
         if (!club) { return next(new Error('Club not found')); }
-
-        //console.log(club);
 
         req.club = club;
         return next();
@@ -158,8 +154,8 @@ router.param('club', function (req, res, next, id) {
 
 router.param('event', function (req, res, next, id) {
 
-    console.log('Processing :event parameter: ');
-    console.log(id);
+    //console.log('Processing :event parameter: ');
+    //console.log(id);
 
     var query = Event.findById(id);
 
@@ -168,7 +164,7 @@ router.param('event', function (req, res, next, id) {
         if (err) { return next(err); }
         if (!event) { return next(new Error('Event not found')); }
 
-        console.log(event)
+        //console.log(event)
 
         req.event = event;
         return next();
@@ -220,7 +216,7 @@ router.get('/users/:user/', function (req, res) {
 
         if (err) { return next(err); }
 
-        console.log(user);
+        //console.log(user);
         res.json(user);
 
     })
@@ -318,8 +314,8 @@ router.post('/clubs/:club/members/:user/join', function (req, res, next) {
 
         if(err) { return next(err); }
 
-        console.log('Next club is important');
-        console.log(clubToJoin);
+        //console.log('Next club is important');
+        //console.log(clubToJoin);
 
         req.user.clubs.push(clubToJoin);
         req.user.save();
@@ -342,11 +338,16 @@ router.post('/email', function (req, res) {
 
     console.log('Sending email');
 
+    var email = req.body;
+
+    console.log('ITS HERE');
+    console.log(email);
+
     var transporter = nodemailer.createTransport({
-        service: 'SendPulse',
+        service: 'Gmail',
         auth: {
-            user: 'glenn278@hotmail.com',
-            password: '3MXs9Qqmm8NLjsp'
+            user: 'goplaynotifications@gmail.com',
+            pass: '06061994'
         }
     });
 
@@ -362,11 +363,11 @@ router.post('/email', function (req, res) {
 
     var mailOptions = {
 
-        from: '"goPlay Notifications" <notifications@goPlay.com>',
-        to: 'glennderwin@gmail.com',
-        subject: 'Hello',
-        text: 'Hello World',
-        html: '<b>Hello world</b>'
+        from: 'goplaynotifications@gmail.com',
+        to: email.recipient,
+        subject: email.subject,
+        text: email.subject,
+        html: email.message
 
     };
 

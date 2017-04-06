@@ -311,8 +311,8 @@
                         <div class="event-container">
                             <div class="list-group">
                                 <div ng-repeat="member in club.members">
-                                    <a href="/#/users/{{member}}" class="list-group-item clearfix">
-                                        {{member}}
+                                    <a href="/#/users/{{member._id}}" class="list-group-item clearfix">
+                                        <center>{{member.username}}</center>
                                     </a>
                                 </div>
                             </div>
@@ -425,7 +425,7 @@
                             data-name="{{event.name}}"
                             data-description="{{event.desc}}"
                             data-reference="99999"
-                            data-amount="1500"
+                            data-amount="{{event.price}}"
                             data-color="#03a678">
                         Join!
                     </button>
@@ -457,8 +457,8 @@
                         <div class="event-container">
                             <div class="list-group">
                                 <div ng-repeat="ticket in event.tickets">
-                                    <a href="/#/users/{{ticket}}" class="list-group-item clearfix">
-                                        {{ticket}}
+                                    <a href="/#/users/{{ticket._id}}" class="list-group-item clearfix">
+                                        <center>{{ticket.username}}</center>
                                     </a>
                                 </div>
                             </div>

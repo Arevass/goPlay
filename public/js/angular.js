@@ -122,9 +122,7 @@ app.factory('events', [
         };
 
         o.get = function (id) {
-            $log.info('events.get called');
             return $http.get('/events/' + id).then(function (res) {
-                //$log.info(JSON.stringify(res.data));
                 return res.data;
             });
         };
@@ -133,7 +131,6 @@ app.factory('events', [
             return $http.delete('/events/' + id, {
                 headers: { Authorization: 'Bearer ' + auth.getToken()}
             }).success(function (data) {
-                $log.info(data);
                 $state.go('home');
             })
         };
@@ -205,6 +202,13 @@ app.factory('clubs', [
             return $http.post('/clubs/' + id + '/members/' + member + '/join', {
                 headers: { Authorization: 'Bearer ' + auth.getToken()}
             });
+        };
+
+        o.sendMail = function (email) {
+            $log.info('Sending mail 2');
+            return $http.post('/email', email).then(function (res) {
+                $log.info('Email sent!');
+            })
         };
 
         return o;
@@ -388,6 +392,42 @@ app.controller('ClubsCtrl', [
 
         $scope.animationsEnabled = true;
 
+        for (var e = 0; e < club.members.length; e++) {
+
+            (function (e) {
+
+                users.get(club.members[e]).then(function (user) {
+
+                    $scope.club.members.splice(e, 1, user);
+
+                })
+
+            })(e);
+
+        }
+
+        var currentUser = auth.currentUserId();
+
+
+        var recip = users.get(currentUser).then(function (user) {
+
+            $log.info('email user :');
+            $log.info(user.email);
+            //$scope.recipient = user.email;
+            return user.email;
+
+        });
+
+        $scope.message = 'You have joined ' + club.name;
+
+        $scope.email = {
+
+            recipient: recip,
+            subject: 'Joined club!',
+            message: $scope.message
+
+        };
+
         $scope.addEvent = function(){
 
             if($scope.name === '') { return; }
@@ -425,6 +465,10 @@ app.controller('ClubsCtrl', [
                 $scope.club.members.push(member);
 
             });
+
+            $log.info('Sending mail');
+
+            //clubs.sendMail($scope.email)
 
         };
 
@@ -523,9 +567,10 @@ app.controller('EventCtrl', [
     '$log',
     'events',
     'event',
+    'users',
     'club',
     'auth',
-    function ($scope, $log, events, event, club, auth) {
+    function ($scope, $log, events, event, users, club, auth) {
 
         $log.info('EventCtrl Initialized');
 
@@ -550,6 +595,20 @@ app.controller('EventCtrl', [
 
         $scope.name = event.name;
 
+        for (var e = 0; e < event.tickets.length; e++) {
+
+            (function (e) {
+
+                users.get(event.tickets[e]).then(function (user) {
+
+                    $scope.event.tickets.splice(e, 1, user);
+
+                })
+
+            })(e);
+
+        }
+
         $scope.showToOwner = function () {
 
             return event.creator == auth.currentUser();
@@ -562,7 +621,6 @@ app.controller('EventCtrl', [
 
             events.buyTicket(event._id, $scope.user).success(function (user) {
 
-                $log.info('User bought ticket');
                 $scope.event.tickets.push(user);
 
             })
@@ -571,8 +629,6 @@ app.controller('EventCtrl', [
 
         $scope.deleteEvent = function () {
 
-            $log.info('deleteEvent called');
-            $log.info(event._id);
             events.delete(event._id);
 
         };
@@ -614,8 +670,8 @@ app.controller('PaymentCtrl', [
                 var token = data["id"];
                 // Insert the token into the form so it gets submitted to the server
                 $paymentForm.append("<input type='hidden' name='token' value='" + token + "' />");
-                console.log('test');
-                $paymentForm.append("<input type='hidden' name='amount' value='1000' />");
+
+                $paymentForm.append("<input type='hidden' name='amount' value='{{ club.regFee }}' />");
                 // Submit the form to the server
                 $paymentForm.get(0).submit();
             }
